@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\VehUsaDev;
 use App\HoraSincronizacion;
 use Illuminate\Http\Request;
+use Mail;
 
 class ScriptController extends Controller
 {
@@ -16,7 +17,7 @@ class ScriptController extends Controller
     public function index($token)
     {
         if($token == "9A18657AB16BDF182548DB1F1FACF"){
-            echo "Hola";
+            //echo "Hola";
             /* Crear nueva tabla "historial_sincronizaciones", esta debe almacenar la hora de comprobación y el tiempo que ha pasado entre la última sincronización y la hora de comprobación*/
             // Script de hora de registro con diferencia máxima de actualización de 2 horas
             $fecha_hora = date("Y-m-d H:i:s");
@@ -38,6 +39,16 @@ class ScriptController extends Controller
             if($s_fecha_hora >= $s_ultima_fecha_hora_vehiculo + 7200){
                 $nueva_verificacion->sincronizada = false;
                 $nueva_verificacion->save();
+
+                //Enviar notificación al correo
+                $email = 'pmanriquez.kti@gmail.com';
+		
+                Mail::send('emails.hora_sincronizacion', $nueva_verificacion, function($msj) use ($email){
+                    $msj->subject('Soporte GPSControl');
+                    $msj->bcc('nsilva@kti.cl');		
+                    $msj->bcc($email);
+                });
+                
                 echo "No sincronizada";
                 return "No sincronizada";
             }
