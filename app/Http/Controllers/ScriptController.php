@@ -42,7 +42,7 @@ class ScriptController extends Controller
 
                 //Enviar notificación al correo
                 $email = 'pmanriquez.kti@gmail.com';
-                dd((array) $nueva_verificacion);
+                print_r("<div>".(array) $nueva_verificacion."</div>");
                 Mail::send('emails.hora_sincronizacion', (array) $nueva_verificacion, function($msj) use ($email){
                     $msj->subject('Soporte GPSControl');
                     $msj->bcc('nsilva@kti.cl');		
