@@ -53,9 +53,9 @@ class ScriptController extends Controller
                 
                 Mail::send('emails.hora_sincronizacion', $table, function($msj) use ($email){
                     $msj->subject('Soporte KTI');
-                    $msj->bcc('nsilva@kti.cl');
                     $msj->to(
                         [
+                            'nsilva@kti.cl',
                             'yoeltorres@sergioescobar.cl',
                             'egnenzerene@sergioescobar.cl',
                             'tpacheco@kti.cl',
