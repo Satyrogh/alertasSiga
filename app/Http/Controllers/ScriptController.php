@@ -44,7 +44,7 @@ class ScriptController extends Controller
             $table['hora_diferencia_dev'] = date("Y-m-d H:i:s", $diferencia);
             $table['hora_diferencia'] = $diferencia_formato;
 
-            if($s_fecha_hora >= $s_ultima_fecha_hora_vehiculo + 7200){
+            if($s_fecha_hora >= $s_ultima_fecha_hora_vehiculo + 3600){
                 $nueva_verificacion->sincronizada = false;
                 $nueva_verificacion->save();
 
