@@ -32,19 +32,26 @@ class ScriptController extends Controller
             $diferencia_formato = (date("Y", $diferencia)-1970)."-".(date("m", $diferencia)-1)."-".(date("d", $diferencia)-1)." ". date("H:i:s", $diferencia); // Formato para distinguir años, meses, días, horas, minutos y segundos de diferencia de la hora actual con la última sincronización
 
             $nueva_verificacion = new HoraSincronizacion;
+            $table = [];
+
             $nueva_verificacion->hora_verificacion = $fecha_hora;
             $nueva_verificacion->hora_ultima_actualizacion = $ultima_fecha_hora_vehiculo;
             $nueva_verificacion->hora_diferencia_dev = date("Y-m-d H:i:s", $diferencia);
             $nueva_verificacion->hora_diferencia = $diferencia_formato;
+
+            $table['hora_verificacion'] = $fecha_hora;
+            $table['hora_ultima_actualizacion'] = $ultima_fecha_hora_vehiculo;
+            $table['hora_diferencia_dev'] = date("Y-m-d H:i:s", $diferencia);
+            $table['hora_diferencia'] = $diferencia_formato;
+
             if($s_fecha_hora >= $s_ultima_fecha_hora_vehiculo + 7200){
                 $nueva_verificacion->sincronizada = false;
                 $nueva_verificacion->save();
 
                 //Enviar notificación al correo
                 $email = 'pmanriquez.kti@gmail.com';
-                print_r("<div>".(array) $nueva_verificacion."</div>");
                 
-                Mail::send('emails.hora_sincronizacion', (array) $nueva_verificacion, function($msj) use ($email){
+                Mail::send('emails.hora_sincronizacion', $table, function($msj) use ($email){
                     $msj->subject('Soporte GPSControl');
                     $msj->bcc('nsilva@kti.cl');		
                     $msj->bcc($email);
